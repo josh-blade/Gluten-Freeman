@@ -1,0 +1,43 @@
+<!-- the route is through views folder so we only need to access the subfolder  -->
+<% layout('layouts/boilerplate')%>
+<h1>All Campgrounds</h1>
+<div id="cluster-map"></div>
+<% for( let campground of camps ) { %>
+    <div class="card mb-3">
+        <div class="row">
+            <!-- takes a third of the row -->
+            <div class="col-md-4">
+                <% if (campground.images.length) { %>
+                    <img src="<%= campground.images[0].url %>" alt="" class="img-fluid">
+                <% } else{ %>
+                    <img class="img-fluid" src="https://res.cloudinary.com/bladesshow/image/upload/v1645642747/YelpCamp/fmgeyydypmumrmzdxjfn.jpg">
+                <% } %> 
+            </div>
+            <!-- takes the other 2 thirds -->
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%=campground.title%>
+                    </h5>
+                    <p class="card-text">
+                        <%= campground.description %>
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            <%= campground.location %>
+                        </small>
+                    </p>
+                    <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">View <%=campground.title%>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+<% } %>
+
+<script>
+    const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+    const campgrounds = {features: <%-JSON.stringify(camps)%>}
+</script>
+
+<script src="/JS/clusterMap.js"></script>
